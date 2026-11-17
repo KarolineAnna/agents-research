@@ -1,8 +1,10 @@
 # Indicadores B3
 
-[![CI](https://github.com/<seu-usuario>/indicadores-b3/actions/workflows/ci.yml/badge.svg)](https://github.com/<seu-usuario>/indicadores-b3/actions/workflows/ci.yml)
+[![CI](https://github.com/KarolineAnna/agents-research/actions/workflows/ci.yml/badge.svg)](https://github.com/KarolineAnna/agents-research/actions/workflows/ci.yml)
 
-Plataforma local e gratuita de análise de investimentos na B3 com **agentes de IA** e **modelos de machine learning** avaliados fora da amostra. Todos os números saem de fontes oficiais e são **rastreáveis**: cada valor mostra o documento, a conta, o período e a fórmula de onde veio.
+Plataforma local e gratuita de análise de investimentos na B3: indicadores e balanços das empresas, valuation e montagem de carteira, com **agentes de IA** e **modelos de machine learning** avaliados fora da amostra.
+
+Os números são **rastreáveis**: cada valor mostra a fonte (CVM, B3, Tesouro Nacional, Banco Central, FRED ou yfinance), o documento, o período e a fórmula de onde veio. Quando um valor é uma premissa e não um dado, isso também aparece.
 
 > Projeto educacional. Nada aqui é recomendação de investimento.
 
@@ -36,7 +38,7 @@ As decisões de arquitetura e seus tradeoffs estão em [`docs/decisoes/`](docs/d
 
 ### Módulos de apoio, ainda em revisão
 
-Os agentes usam os cálculos de renda fixa (curva do Tesouro e CDI), que não têm tela própria nesta versão. O código está em `analytics/` e `data/` porque os agentes dependem dele, mas ainda está sendo conferido contra fontes externas.
+Os agentes e as premissas de carteira usam os cálculos de renda fixa (curva do Tesouro e CDI), que não têm tela própria nesta versão. O código está em `analytics/` e `data/`. O preço calculado dos títulos prefixados bate com o PU publicado pelo Tesouro (diferença abaixo de 0,002%), e os títulos IPCA+ resultam todos no mesmo VNA. A curva ainda usa algumas simplificações, como misturar títulos com e sem cupom.
 
 ## Arquitetura
 
@@ -49,6 +51,7 @@ flowchart LR
         BCB[Banco Central<br/>SGS · Focus]
         FRED[FRED]
     end
+    YF[yfinance<br/>não oficial]
     subgraph indicadores_b3
         D[data/<br/>coleta + cache] --> A[analytics/<br/>indicadores · DCF · RF]
         D --> P[portfolio/<br/>Markowitz · BL · CMA]
@@ -59,7 +62,7 @@ flowchart LR
         API[api/<br/>FastAPI] --> A & P & M & AG & Q
     end
     LLM[(IA gratuita<br/>Gemini · Groq · Ollama)] <--> AG
-    CVM & B3 & TN & BCB & FRED --> D
+    CVM & B3 & TN & BCB & FRED & YF --> D
     API --> WEB[web/static<br/>HTML + JS sem build]
 ```
 
@@ -100,7 +103,7 @@ flowchart LR
 | recall@k e MRR | se a busca traz o trecho certo entre os k primeiros, com perguntas geradas por IA a partir de trechos sorteados (sem rótulo manual), comparando BM25, semântica e híbrida |
 | aprovadas pelo validador / na 1ª tentativa | respostas cujas citações existem e cujas aspas e números batem com as páginas citadas |
 | rascunhos barrados | alucinações pegas pelo validador antes de chegar ao usuário |
-| contém esperado / recusa correta | conferência contra as perguntas escritas à mão em `data/evals/perguntas.jsonl` |
+| contém esperado / recusa correta | conferência contra perguntas escritas à mão, num arquivo local `data/evals/perguntas.jsonl` (fica fora do repositório, como toda a pasta `data/`) |
 | tempo e tokens | custo de cada provedor (Gemini × Groq × Ollama) |
 
 ## Começando
@@ -108,8 +111,8 @@ flowchart LR
 Requisitos: Python 3.10 ou mais recente.
 
 ```bash
-git clone https://github.com/<seu-usuario>/indicadores-b3.git
-cd indicadores-b3
+git clone https://github.com/KarolineAnna/agents-research.git
+cd agents-research
 python -m venv .venv
 # Windows: .venv\Scripts\activate   |   Linux/macOS: source .venv/bin/activate
 pip install -e ".[dev]"
@@ -161,7 +164,7 @@ indicadores-b3/
 | [Tesouro Transparente](https://www.tesourotransparente.gov.br/) | preços e taxas do Tesouro Direto | CSV público |
 | [Banco Central](https://dadosabertos.bcb.gov.br/) | SGS (Selic, IPCA, PTAX…) e Focus | APIs públicas sem chave |
 | [FRED](https://fred.stlouisfed.org/) | juros e inflação dos EUA | CSV sem chave |
-| yfinance | preços e proventos (reserva) | não oficial |
+| yfinance | preços históricos ajustados, Ibovespa, proventos e juro dos EUA (^FVX) | não oficial |
 
 ## Qualidade e testes
 
@@ -181,9 +184,9 @@ pytest -q                 # testes
 
 - A CVM não publica inadimplência de 90 dias, índice de Basileia nem lucro recorrente dos bancos. Esses dados aparecem como "ausentes", com a indicação da fonte (IF.data do BCB ou RI de cada banco).
 - Depois da Resolução CMN 4.966 (2025), comparações de provisão para perdas com anos anteriores não são diretas.
-- O yfinance não é uma fonte oficial e é usado só como reserva. Quando ele falha, os preços vêm do COTAHIST da B3.
+- O yfinance não é uma fonte oficial, mas é a fonte principal de preços históricos (ajustados por proventos), do Ibovespa, dos proventos e do juro dos EUA. Sem internet, o último preço de cada ação vem do COTAHIST da B3 em cache; o dólar usa a PTAX do Banco Central; se o ^FVX não responder, o juro dos EUA usa 4% a.a.
 - Os níveis gratuitos de IA têm limites que podem mudar a qualquer momento.
 
 ## Licença
 
-Defina a licença antes de publicar (por exemplo, MIT). Sem um arquivo `LICENSE`, o código não pode ser reutilizado por terceiros.
+Ainda sem licença definida. Sem um arquivo `LICENSE`, o código pode ser lido, mas não reutilizado por terceiros.
