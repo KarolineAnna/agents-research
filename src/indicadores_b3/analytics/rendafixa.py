@@ -160,11 +160,21 @@ def interp(x, xs, ys):
     return float(np.interp(x, xs, ys)) if xs[0] <= x <= xs[-1] else None
 
 
+def media_por_prazo(pontos) -> tuple[list[float], list[float]]:
+    """(anos, valor) → xs crescentes e sem repetição. Títulos com o mesmo vencimento (ex.: LTN e NTN-F)
+    viram um ponto só, com a média das taxas; com xs repetidos, o np.interp usaria um deles arbitrariamente."""
+    grupos: dict[float, list[float]] = {}
+    for x, y in pontos:
+        grupos.setdefault(round(x, 6), []).append(y)
+    xs = sorted(grupos)
+    return xs, [sum(grupos[x]) / len(grupos[x]) for x in xs]
+
+
 def curvas(dados_titulos: dict) -> dict:
     T = dados_titulos["titulos"]
     pre = sorted([(t["anos"], t["taxa"], t["codigo"]) for t in T if t["sigla"] in ("PRE", "PREJS")])
     real = sorted([(t["anos"], t["taxa"], t["codigo"]) for t in T if t["sigla"] in ("IPCA", "IPCAJS")])
-    xs, ys = [p[0] for p in pre], [p[1] for p in pre]
+    xs, ys = media_por_prazo((p[0], p[1]) for p in pre)
     implicita = []
     for anos, taxa_real, cod in real:
         tp = interp(anos, xs, ys)

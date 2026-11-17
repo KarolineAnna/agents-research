@@ -57,10 +57,9 @@ def _curvas(dia: str) -> dict:
 
 
 def _no_prazo(pontos: list[dict], campo: str, anos: float) -> float | None:
-    pts = sorted((p["anos"], p[campo]) for p in pontos)
-    if not pts:
+    xs, ys = rendafixa.media_por_prazo([(p["anos"], p[campo]) for p in pontos])
+    if not xs:
         return None
-    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
     return float(np.interp(min(max(anos, xs[0]), xs[-1]), xs, ys))  # fora da curva: usa a ponta mais próxima
 
 
@@ -119,7 +118,7 @@ def bloco_ativo(t: str, preco: float, H: float, m: dict, g: dict, classe_fiscal:
         linha = next((x for x in _curvas(_hoje())["titulos"]["titulos"] if x["codigo"] == a["ticker"]), None)
         if linha is None:
             raise LookupError(f"{t} não está no arquivo do Tesouro.")
-        if linha["sigla"] in ("IPCA", "IPCAJS", "RENDA+", "EDUCA+"):
+        if linha["sigla"] in ("IPCA", "IPCAJS", "RENDA", "EDUCA"):  # siglas de tesouro.SIGLAS
             inf_t = _no_prazo(_curvas(_hoje())["curvas"]["implicita"], "inflacao", linha["anos"])
             b("Taxa real do título", linha["taxa"], "Tesouro Nacional")
             b(f"Inflação implícita em {linha['anos']:.1f} anos", inf_t, "curva do Tesouro")
