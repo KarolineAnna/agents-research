@@ -6,8 +6,6 @@ Plataforma local e gratuita de análise de investimentos na B3 com **agentes de 
 
 > Projeto educacional. Nada aqui é recomendação de investimento.
 
-![Análise do agente de pesquisa](docs/img/research-agente.png)
-
 ## Destaques
 
 | Área | O que faz |
@@ -178,8 +176,6 @@ pytest -q                 # testes
   - robustez dos agentes: falhas de ferramenta, troca de provedor, backoff, validador e limite de passos.
 - **Testes com dados reais:** usam os arquivos de `data/cache_cvm` e conferem, entre outras coisas, que os balanços fecham, que as DREs fecham e que os preços do Tesouro batem com os publicados. São pulados quando o cache não existe.
 - **CI:** o GitHub Actions roda lint e testes em Python 3.10 a 3.13.
-
-![Saúde dos dados](docs/img/saude-dos-dados.png)
 
 ## Limitações conhecidas
 

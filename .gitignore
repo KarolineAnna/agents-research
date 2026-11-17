@@ -33,3 +33,6 @@ iniciar_log.txt
 
 # abas privadas: ficam só no computador (o site funciona sem elas, com as abas públicas)
 src/indicadores_b3/extras/
+
+# imagens: ficam só no computador
+docs/img/
