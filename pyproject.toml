@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indicadores-b3"
+version = "0.5.0"
+description = "Análise de investimentos na B3 com dados oficiais e rastreáveis: indicadores, balanços, valuation, carteiras, modelos estatísticos e agentes de IA gratuitos."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Ana Karoline" }]
+keywords = ["b3", "cvm", "valuation", "markowitz", "black-litterman", "garch", "agents", "llm", "fastapi"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Framework :: FastAPI",
+  "Natural Language :: Portuguese (Brazilian)",
+  "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "pandas>=2.1",
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "requests>=2.31",
+  "yfinance>=0.2.40",
+  "lxml>=5.0",
+  "scikit-learn>=1.4",
+  "arch>=6.3",
+  "statsmodels>=0.14",
+  "pypdf>=4.0",
+  "pdfplumber>=0.11",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
+
+[project.scripts]
+indicadores-b3 = "indicadores_b3.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+indicadores_b3 = ["web/static/*", "extras/static/*", "data/*.csv", "agents/*.md", "rag/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src/indicadores_b3/extras/testes"]  # a segunda só existe localmente
+pythonpath = ["src"]
+markers = [
+  "dados: precisa dos arquivos da CVM/B3/Tesouro em data/cache_cvm (pulado se não houver)",
+  "rede: acessa a internet",
+]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::FutureWarning"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E731", "E741", "B008", "B905", "UP007", "E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["indicadores_b3"]

@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Indicadores B3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="tema.css">
+</head>
+<body>
+  <div class="app">
+  <aside class="lateral" id="lateral">
+    <div class="marca">
+      <span class="marca-ico" aria-hidden="true">B3</span>
+      <div><strong>Indicadores B3</strong><span>Análise financeira</span></div>
+    </div>
+    <nav class="menu" role="tablist" aria-label="Seções do site">
+      <p class="grupo-menu">Visão geral</p>
+        <button type="button" role="tab" data-aba="indicadores" data-desc="Ações, FIIs, ETFs, cripto e Tesouro, com a fonte de cada número" aria-selected="true"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M6 16V10"/><path d="M11 16V5"/><path d="M16 16v-7"/><path d="M21 16v-4"/></svg>Indicadores</button>
+      <p class="grupo-menu">Carteiras</p>
+<!--extras:menu-carteiras-->
+        <button type="button" role="tab" data-aba="carteira" data-desc="Alocação ótima, risco e diagnóstico contra o Ibovespa" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/></svg>Carteira eficiente</button>
+      <p class="grupo-menu">Empresas</p>
+        <button type="button" role="tab" data-aba="balancos" data-desc="DRE, balanço e DCF com as contas da CVM" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 12h7"/><path d="M9 16h7"/></svg>Balanços</button>
+<!--extras:menu-empresas-->
+        <button type="button" role="tab" data-aba="docs" data-desc="Perguntas aos documentos da CVM, com citação conferida" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v6"/><path d="M6 3v18h6"/><circle cx="16.5" cy="16.5" r="3"/><path d="m21 21-2.4-2.4"/></svg>Documentos</button>
+<!--extras:menu-mercado-->
+      <p class="grupo-menu">Research</p>
+        <button type="button" role="tab" data-aba="research" data-desc="Análise da empresa por agente com dados oficiais" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/><path d="M8 12.5l2-2 1.5 1.5 2.5-3"/></svg>Research</button>
+        <button type="button" role="tab" data-aba="mod" data-desc="Modelos testados fora da amostra" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></svg>Modelos</button>
+      <p class="grupo-menu">Relatórios</p>
+        <button type="button" role="tab" data-aba="acertos" data-desc="Conclusões conferidas após 3, 6 e 12 meses" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>Histórico de acertos</button>
+        <button type="button" role="tab" data-aba="saude" data-desc="Atualização das fontes e consistência dos números" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="M8.5 12h2l1.5-3 2 6 1.5-3h1"/></svg>Saúde dos dados</button>
+        <button type="button" role="tab" data-aba="estudos" data-desc="Conceitos, fórmulas e referências" aria-selected="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5"/><path d="M9 7h6"/></svg>Estudos</button>
+    </nav>
+    <p class="lateral-rodape">Dados: CVM · Banco Central · Tesouro Nacional · B3 · yfinance<br>Projeto educacional: nada aqui é recomendação.</p>
+  </aside>
+  <div class="fundo-menu" id="fundo-menu" hidden></div>
+  <div class="area">
+    <header class="barra">
+      <button type="button" class="abrir-menu" id="abrir-menu" aria-label="Abrir menu" aria-controls="lateral">☰</button>
+      <div><h1 id="titulo-pagina">Indicadores</h1><p id="desc-pagina" class="sub"></p></div>
+    </header>
+
+  <main class="wrap conteudo">
+    <!-- ================= Aba: Indicadores ================= -->
+    <section id="aba-indicadores" class="aba-painel" role="tabpanel">
+      <form id="busca" class="form-linha">
+        <input id="tickers" type="text" value="PETR4, HGLG11, BOVA11, BTC, OURO"
+               placeholder="Tickers separados por vírgula" autocomplete="off" spellcheck="false">
+        <button type="button" class="secundario" data-seletor="#tickers">＋ Escolher da lista</button>
+        <button type="submit">Analisar</button>
+      </form>
+      <p class="dica formatos">Digite os códigos ou escolha da lista: ações, FIIs, ETFs, cripto, ouro, dólar e Tesouro Direto.</p>
+      <p id="status" class="status" role="status"></p>
+      <div class="vazio" data-vazio-form="#busca" data-vazio-input="#tickers"><h3>Comece por um exemplo</h3><p>Escolha um grupo para ver os indicadores calculados, com a fonte de cada número.</p><div class="chips"><button type="button" class="chip" data-exemplo="PETR4, VALE3, ITUB4"><b>Ações grandes</b> PETR4, VALE3, ITUB4</button><button type="button" class="chip" data-exemplo="HGLG11, KNRI11, XPML11"><b>FIIs</b> HGLG11, KNRI11, XPML11</button><button type="button" class="chip" data-exemplo="BOVA11, IVVB11"><b>ETFs</b> BOVA11, IVVB11</button><button type="button" class="chip" data-exemplo="BTC, OURO, USD"><b>Cripto, ouro e dólar</b> BTC, OURO, USD</button></div></div>
+
+      <section id="comparativo" hidden>
+        <h2>Comparativo</h2>
+        <p class="dica">Clique numa empresa para ver o cálculo passo a passo.</p>
+        <div id="tabela-wrap"></div>
+      </section>
+
+      <section id="detalhe" hidden></section>
+    </section>
+
+
+    <!-- ================= Aba: Carteira eficiente ================= -->
+    <section id="aba-carteira" class="aba-painel" role="tabpanel" hidden>
+      <form id="form-carteira" class="form-carteira">
+        <label class="campo largo">
+          <span>Ativos</span>
+          <input id="tickers-carteira" name="tickers" type="text" value="PETR4, ITUB4, HGLG11, BOVA11, BTC, OURO"
+                 autocomplete="off" spellcheck="false">
+          <button type="button" class="link escolher" data-seletor="#tickers-carteira">＋ Escolher da lista</button>
+        </label>
+        <label class="campo">
+          <span>Histórico</span>
+          <select name="periodo">
+            <option value="1y">1 ano</option>
+            <option value="2y">2 anos</option>
+            <option value="3y" selected>3 anos</option>
+            <option value="5y">5 anos</option>
+          </select>
+        </label>
+        <label class="campo">
+          <span>Taxa livre de risco (% a.a.)</span>
+          <input name="rf" type="number" step="0.01" min="0" placeholder="CDI atual (automático)">
+        </label>
+        <label class="campo">
+          <span>Peso máx. por ativo (%)</span>
+          <input name="peso_max" type="number" step="1" min="1" max="100" value="100">
+        </label>
+        <label class="campo">
+          <span>Retorno esperado</span>
+          <select name="modelo" id="modelo-retorno">
+            <option value="blocos" selected>Premissas de mercado</option>
+            <option value="bl">Black-Litterman</option>
+            <option value="capm">CAPM</option>
+            <option value="historico" class="so-estudo">Média histórica (só para comparar)</option>
+          </select>
+        </label>
+        <label class="campo" id="campo-mercado" hidden>
+          <span>Retorno esperado do Ibovespa (% a.a.)</span>
+          <input name="mercado" type="number" step="0.1" placeholder="Média histórica do período">
+        </label>
+        <button type="submit" id="botao-carteira">Montar carteira</button>
+      </form>
+      <p id="cdi-fonte" class="dica"></p>
+
+      <nav class="subabas" role="tablist" aria-label="Visão da carteira">
+        <button type="button" data-sub="montar" aria-selected="true">Montar minha carteira</button>
+        <button type="button" data-sub="bruto" aria-selected="false">Fronteira eficiente</button>
+        <button type="button" data-sub="impostos" aria-selected="false">Fronteira com impostos</button>
+      </nav>
+      <div id="params-impostos" class="params-impostos" hidden>
+        <label class="campo">
+          <span>Horizonte do investimento (anos)</span>
+          <input form="form-carteira" name="horizonte" type="number" step="0.5" min="0.5" value="2">
+        </label>
+        <label class="check">
+          <input form="form-carteira" name="isencao" type="checkbox">
+          <span>Minhas vendas ficam dentro das isenções (ações até R$ 20 mil/mês, cripto até R$ 35 mil/mês, dólar em espécie até US$ 5 mil/ano)</span>
+        </label>
+        <button type="submit" form="form-carteira" class="secundario">Recalcular</button>
+      </div>
+      <div id="fluxo-painel"></div>
+      <div id="premissas-painel"></div>
+      <div id="montar-painel"></div>
+      <p id="status-carteira" class="status" role="status"></p>
+      <div id="resultado-carteira" hidden></div>
+      <div id="montar-resultado"></div>
+    </section>
+
+
+
+    <!-- ================= Aba: Modelos ================= -->
+    <section id="aba-mod" class="aba-painel" role="tabpanel" hidden>
+      <nav class="subabas" role="tablist">
+        <button type="button" data-mod="carteira" aria-selected="true">Carteira robusta</button>
+        <button type="button" data-mod="garch" aria-selected="false">Volatilidade (GARCH)</button>
+        <button type="button" data-mod="estudos" aria-selected="false">Estudos dos modelos</button>
+      </nav>
+      <div id="resultado-mod"></div>
+    </section>
+
+
+
+
+    <section id="aba-acertos" class="aba-painel" role="tabpanel" hidden>
+      <div class="saude-acoes"><button type="button" id="acertos-rodar">Conferir agora</button></div>
+      <p id="status-acertos" class="status" role="status"></p>
+      <div id="resultado-acertos"></div>
+    </section>
+
+    <section id="aba-saude" class="aba-painel" role="tabpanel" hidden>
+      <div class="saude-acoes">
+        <button type="button" id="saude-rodar">Verificar agora</button>
+        <label class="check"><input type="checkbox" id="saude-online"> <span>Testar também as fontes online (Banco Central, Tesouro, yfinance, B3)</span></label>
+      </div>
+      <p id="status-saude" class="status" role="status"></p>
+      <div id="resultado-saude"></div>
+      <div class="bloco" id="saude-empresa">
+        <h2>Conferir uma empresa</h2>
+        <form id="form-saude-emp" class="form-linha">
+          <input id="saude-emp-in" type="text" value="WEGE3" autocomplete="off" spellcheck="false" aria-label="Código da ação">
+          <button type="submit">Conferir</button>
+        </form>
+        <p id="saude-emp-st" class="status" role="status"></p>
+        <div id="saude-emp-res"></div>
+      </div>
+    </section>
+
+    <section id="aba-research" class="aba-painel" role="tabpanel" hidden>
+      <nav class="subabas rs-subabas" role="tablist" aria-label="Research">
+        <button type="button" role="tab" data-rs-sub="analise" aria-selected="true">Análise</button>
+        <button type="button" role="tab" data-rs-sub="salvos" aria-selected="false">Relatórios salvos <span id="rs-salvos-n" class="rs-contador"></span></button>
+      </nav>
+      <div id="rs-pag-analise" role="tabpanel">
+        <div class="rs-col">
+          <form id="form-research" class="rs-form">
+          <h2 class="rs-form-tit">Nova análise</h2>
+          <fieldset class="rs-modo"><legend>Modo</legend>
+            <label class="rs-modo-op"><input type="radio" name="rs-modo" value="agente" checked> <span><b>Agente com IA</b><small>A IA decide o que investigar, usa as ferramentas e escreve. Números conferidos.</small></span></label>
+            <label class="rs-modo-op"><input type="radio" name="rs-modo" value="regras"> <span><b>Regras fixas</b><small>Sem IA: os três agentes rodam em ordem e o texto sai de regras.</small></span></label>
+          </fieldset>
+          <label>Empresa <input id="rs-ticker" type="text" value="ITUB4" autocomplete="off" spellcheck="false">
+            <span id="rs-setor" class="rs-setor" aria-live="polite"></span></label>
+          <div class="rs-pares-campo">
+            <label for="rs-pares">Pares para comparar</label>
+            <div class="rs-pares-linha"><input id="rs-pares" type="text" value="" placeholder="Vazio = automático pelo setor" autocomplete="off" spellcheck="false">
+              <button type="button" id="rs-sugerir" class="botao-sec">Sugerir pelo setor</button></div>
+            <span id="rs-pares-dica" class="dica"></span>
+          </div>
+          <fieldset class="rs-agentes rs-so-regras"><legend>Agentes</legend>
+            <label class="check"><input type="checkbox" class="rs-agente" value="financial" checked> <span>Financial Analyst</span></label>
+            <label class="check"><input type="checkbox" class="rs-agente" value="market" checked> <span>Market Research</span></label>
+            <label class="check"><input type="checkbox" class="rs-agente" value="investment" checked> <span>Investment Research</span></label>
+          </fieldset>
+          <details class="rs-prem rs-so-regras"><summary>Premissas do valuation</summary>
+            <label>Prêmio de risco (% a.a.) <input id="rs-erp" type="text" inputmode="decimal" placeholder="5"></label>
+            <label>Beta <input id="rs-beta" type="text" inputmode="decimal" placeholder="1"></label>
+            <label>Crescimento real na perpetuidade (% a.a.) <input id="rs-creal" type="text" inputmode="decimal" placeholder="1"></label>
+          </details>
+          <label class="check rs-so-regras"><input type="checkbox" id="rs-ia" checked> <span>Usar IA para redigir o texto, se houver uma configurada</span></label>
+          <div class="rs-acoes"><button type="submit" id="rs-rodar">Rodar análise</button>
+            <p id="status-research" class="status" role="status"></p></div>
+          </form>
+          <details class="rs-config" id="rs-config"><summary>Configurar IA gratuita <span id="rs-ia-status" class="dica"></span></summary>
+            <div class="rs-config-corpo">
+            <p class="dica">Chaves gratuitas, sem cartão: <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Gemini (Google AI Studio) ↗</a> ·
+              <a href="https://console.groq.com/keys" target="_blank" rel="noopener">Groq ↗</a>. Ou instale o <a href="https://ollama.com" target="_blank" rel="noopener">Ollama ↗</a> (local, sem chave, mais fraco).
+              As chaves ficam só no arquivo <code>data/config_ia.json</code> do seu computador. Os planos gratuitos têm limites; quando um acaba, o agente passa para o próximo da lista.
+              No nível gratuito do Gemini, o Google pode usar o que for enviado para melhorar os modelos (aqui só vão dados públicos de empresas).</p>
+            <label>Chave do Gemini <input id="rs-k-gemini" type="password" autocomplete="off" placeholder="cole aqui (deixe vazio para manter)"></label>
+            <label>Chave do Groq <input id="rs-k-groq" type="password" autocomplete="off" placeholder="cole aqui (deixe vazio para manter)"></label>
+            <label>Ordem de uso <input id="rs-ordem" type="text" value="gemini, groq, ollama" spellcheck="false"></label>
+            <div class="rs-config-bt"><button type="button" id="rs-salvar-ia" class="botao-sec">Salvar</button><button type="button" id="rs-testar-ia" class="botao-sec">Testar conexão</button></div>
+            <div id="rs-provs"></div>
+            </div>
+          </details>
+        </div>
+      <div id="resultado-research"><div class="vazio"><h3>Como funciona</h3><p>No modo <b>Agente com IA</b>, a IA decide o que investigar: lê balanços na CVM, preço na B3, juros e inflação no Tesouro e no Banco Central, compara com os pares, calcula o valuation e escreve a tese. No modo <b>Regras fixas</b>, as mesmas etapas rodam em ordem, sem IA. Nos dois, todo número tem um id que leva à fonte.</p><p>Cada análise fica salva na página <b>Relatórios salvos</b>, agrupada por empresa.</p></div></div>
+      </div>
+      <div id="rs-pag-salvos" role="tabpanel" hidden>
+        <div id="rs-historico" class="rs-salvos"></div>
+      </div>
+      <aside id="rs-item" class="rs-item" hidden></aside>
+    </section>
+
+    <section id="aba-docs" class="aba-painel" role="tabpanel" hidden>
+      <div class="bloco">
+        <h2>1. Base de documentos</h2>
+        <p class="dica">Baixa os PDFs dos comunicados entregues à CVM (IPE), extrai o texto de cada página e indexa para busca por palavras (BM25) e por significado (embeddings, se houver IA configurada na aba Research).</p>
+        <form id="dc-form-indexar" class="dc-linha">
+          <label>Empresas <input id="dc-tickers" type="text" value="ITUB4" autocomplete="off" spellcheck="false"></label>
+          <label>Por empresa <select id="dc-qtd"><option>5</option><option selected>10</option><option>20</option></select></label>
+          <fieldset class="dc-cats"><legend>Categorias</legend>
+            <label class="check"><input type="checkbox" value="Fato Relevante" checked> <span>Fato relevante</span></label>
+            <label class="check"><input type="checkbox" value="Comunicado ao Mercado" checked> <span>Comunicado</span></label>
+            <label class="check"><input type="checkbox" value="Aviso aos Acionistas" checked> <span>Aviso aos acionistas</span></label>
+            <label class="check"><input type="checkbox" id="dc-ri" checked> <span>Relatórios de resultados (RI)</span></label>
+          </fieldset>
+          <button type="submit" id="dc-indexar">Baixar e indexar</button>
+        </form>
+        <p id="dc-status-indexar" class="status" role="status"></p>
+        <div id="dc-base"></div>
+      </div>
+      <div class="bloco">
+        <h2>2. Pergunte aos documentos</h2>
+        <form id="dc-form-perguntar" class="dc-pergunta">
+          <input id="dc-ticker" type="text" placeholder="Empresa (opcional)" autocomplete="off" spellcheck="false">
+          <input id="dc-pergunta" type="text" placeholder="Ex.: Qual o valor dos juros sobre capital próprio e quando serão pagos?" autocomplete="off">
+          <button type="submit" id="dc-perguntar">Perguntar</button>
+        </form>
+        <div class="chips" id="dc-exemplos">
+          <button type="button" class="chip" data-q="Quais proventos (dividendos ou JCP) foram anunciados? Valores por ação e datas de pagamento.">Proventos</button>
+          <button type="button" class="chip" data-q="Existe programa de recompra de ações? Quantas ações, qual o prazo e o objetivo?">Recompra</button>
+          <button type="button" class="chip" data-q="Houve emissão de dívida (debêntures, letras financeiras)? Montante, prazo e custo.">Dívida</button>
+          <button type="button" class="chip" data-q="Houve mudanças na diretoria ou no conselho? Quem saiu e quem entrou?">Governança</button>
+        </div>
+        <p id="dc-status-perguntar" class="status" role="status"></p>
+        <div id="dc-resposta"></div>
+      </div>
+      <div class="bloco">
+        <h2>3. Avaliação (evals)</h2>
+        <p class="dica">Mede, com números, se a busca acha o trecho certo e se as respostas passam no validador. Rode depois de cada mudança e compare as execuções.</p>
+        <div class="dc-avaliar">
+          <div class="dc-cartao">
+            <h3>Busca</h3>
+            <p class="dica">Sorteia trechos do índice e cria uma pergunta para cada um (com IA, usando outras palavras). Mede se o trecho volta entre os primeiros resultados: <b>recall@k</b> e <b>MRR</b>, para BM25, semântica e híbrida.</p>
+            <label>Perguntas <select id="dc-n"><option>20</option><option selected>40</option><option>80</option></select></label>
+            <label class="check"><input type="checkbox" id="dc-ia" checked> <span>Gerar perguntas com IA</span></label>
+            <button type="button" id="dc-avaliar-busca" class="botao-sec">Avaliar busca</button>
+          </div>
+          <div class="dc-cartao">
+            <h3>Respostas</h3>
+            <p class="dica">Roda o agente nas suas perguntas de <code id="dc-arquivo">perguntas.jsonl</code> (<span id="dc-n-perg">0</span> perguntas) e mede aprovação no validador, alucinações barradas, conteúdo esperado, recusas corretas, tempo e tokens.</p>
+            <label>Provedor <select id="dc-prov"><option value="">Automático (ordem configurada)</option><option value="gemini">Gemini</option><option value="groq">Groq</option><option value="ollama">Ollama</option></select></label>
+            <button type="button" id="dc-avaliar-resp" class="botao-sec">Avaliar respostas</button>
+          </div>
+        </div>
+        <p id="dc-status-avaliar" class="status" role="status"></p>
+        <div id="dc-execucoes"></div>
+      </div>
+      <aside id="dc-pagina" class="rs-item" hidden></aside>
+    </section>
+
+    <!-- ================= Aba: DRE e Balanço ================= -->
+    <section id="aba-balancos" class="aba-painel" role="tabpanel" hidden>
+      <nav class="subabas" role="tablist" aria-label="Relatório">
+        <button type="button" data-bal="dre" aria-selected="true">DRE (resultado)</button>
+        <button type="button" data-bal="balanco" aria-selected="false">Balanço patrimonial</button>
+        <button type="button" data-bal="dcf" aria-selected="false">DCF (valuation)</button>
+      </nav>
+    <div id="bal-dem">
+        <form id="form-dem" class="form-linha">
+          <input id="ticker-dem" type="text" value="WEGE3" autocomplete="off" spellcheck="false" placeholder="Código da ação">
+          <button type="button" class="secundario" data-seletor="#ticker-dem" data-classe="acoes">＋ Escolher da lista</button>
+          <button type="submit">Carregar</button>
+        </form>
+              <nav class="subabas" role="tablist" hidden>
+          <button type="button" data-dem="dre" aria-selected="true">DRE (resultado)</button>
+          <button type="button" data-dem="balanco" aria-selected="false">Balanço patrimonial</button>
+        </nav>
+        <p id="status-dem" class="status" role="status"></p>
+      <div class="vazio" data-vazio-form="#form-dem" data-vazio-input="#ticker-dem"><h3>Escolha uma empresa</h3><p>A DRE e o balanço vêm direto dos arquivos da CVM, explicados linha a linha.</p><div class="chips"><button type="button" class="chip" data-exemplo="WEGE3"><b>WEG</b> WEGE3</button><button type="button" class="chip" data-exemplo="PETR4"><b>Petrobras</b> PETR4</button><button type="button" class="chip" data-exemplo="ITUB4"><b>Itaú</b> ITUB4</button><button type="button" class="chip" data-exemplo="MGLU3"><b>Magazine Luiza</b> MGLU3</button></div></div>
+        <div id="resultado-dem"></div>
+      </div>
+  
+      <!-- ================= Aba: DCF ================= -->
+      <div id="bal-dcf" hidden>
+        <form id="form-dcf" class="form-linha">
+          <input id="ticker-dcf" type="text" value="WEGE3" autocomplete="off" spellcheck="false" placeholder="Código da ação">
+          <button type="button" class="secundario" data-seletor="#ticker-dcf" data-classe="acoes">＋ Escolher da lista</button>
+          <button type="submit">Carregar</button>
+        </form>
+              <p id="status-dcf" class="status" role="status"></p>
+      <div class="vazio" data-vazio-form="#form-dcf" data-vazio-input="#ticker-dcf"><h3>Escolha uma empresa para avaliar</h3><p>O DCF usa o fluxo de caixa real da empresa (CVM) e premissas que você ajusta.</p><div class="chips"><button type="button" class="chip" data-exemplo="WEGE3"><b>WEG</b> WEGE3</button><button type="button" class="chip" data-exemplo="ABEV3"><b>Ambev</b> ABEV3</button><button type="button" class="chip" data-exemplo="EGIE3"><b>Engie</b> EGIE3</button><button type="button" class="chip" data-exemplo="RADL3"><b>Raia Drogasil</b> RADL3</button></div></div>
+        <div id="resultado-dcf"></div>
+      </div>
+    </section>
+    <!-- ================= Aba: Comunicados ================= -->
+    <section id="aba-estudos" class="aba-painel" role="tabpanel" hidden>
+      <div class="estudos">
+        <aside class="est-nav">
+          <input id="estudos-busca" type="search" class="mc-input" placeholder="Buscar conceito (ex.: duration, beta)">
+          <select id="estudos-cats" class="mc-input"></select>
+          <p class="dica" id="estudos-total"></p>
+          <div id="estudos-lista"></div>
+        </aside>
+        <div id="estudos-artigo"></div>
+      </div>
+    </section>
+<!--extras:secoes-->
+  </main>
+  </div>
+  </div>
+
+  <!-- ================= Seletor de ativos (listagem por classe) ================= -->
+  <dialog id="seletor" aria-labelledby="seletor-titulo">
+    <div class="painel-topo">
+      <strong id="seletor-titulo">Escolher ativos</strong>
+      <button type="button" id="seletor-fechar" class="fechar" aria-label="Fechar">×</button>
+    </div>
+    <div class="seletor-corpo">
+      <nav class="subabas" id="seletor-classes" role="tablist"></nav>
+      <div class="seletor-filtros">
+        <input id="seletor-busca" type="search" placeholder="Buscar por código ou nome…" autocomplete="off">
+        <select id="seletor-setor" aria-label="Filtrar por setor" hidden><option value="">Todos os setores</option></select>
+        <button type="button" id="seletor-marcar" class="botao-sec" hidden>Marcar o setor</button>
+      </div>
+      <p id="seletor-fonte" class="dica"></p>
+      <ul id="seletor-lista" class="seletor-lista"></ul>
+      <div class="seletor-rodape">
+        <span id="seletor-escolhidos" class="dica"></span>
+        <button type="button" id="seletor-ok">Usar selecionados</button>
+      </div>
+    </div>
+  </dialog>
+
+<!--extras:dialogos-->
+
+  <dialog id="painel" aria-labelledby="painel-titulo">
+    <div class="painel-topo">
+      <button type="button" id="painel-voltar" class="link" hidden>← Voltar</button>
+      <button type="button" id="painel-fechar" class="fechar" aria-label="Fechar">×</button>
+    </div>
+    <div id="painel-corpo"></div>
+  </dialog>
+
+  <script src="app.js"></script>
+  <script src="comum.js"></script>
+  <script src="carteira.js"></script>
+  <script src="montar.js"></script>
+  <script src="diagnostico.js"></script>
+  <script src="seletor.js"></script>
+  <script src="modelos.js"></script>
+  <script src="modelos_estudos.js"></script>
+  <script src="saude.js"></script>
+  <script src="research.js"></script>
+  <script src="documentos.js"></script>
+  <script src="acertos.js"></script>
+  <script src="dcf.js"></script>
+  <script src="demonstracoes.js"></script>
+  <script src="balancos.js"></script>
+  <script src="estudos_artigos.js"></script>
+  <script src="estudos.js"></script>
+  <script src="acao.js"></script>
+<!--extras:scripts-->
+  <script src="limpo.js"></script>
+</body>
+</html>

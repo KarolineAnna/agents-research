@@ -1,0 +1,35 @@
+# dados locais (baixados ou gerados) — nunca vão para o Git
+data/
+cache_cvm/
+research_out/
+*.db
+config_ia.json
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# pasta com a versão anterior (pode apagar)
+_antigo/
+
+# logs locais
+iniciar_log.txt
+
+# abas privadas: ficam só no computador (o site funciona sem elas, com as abas públicas)
+src/indicadores_b3/extras/
