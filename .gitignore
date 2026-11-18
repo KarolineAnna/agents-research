@@ -1,5 +1,5 @@
 # dados locais (baixados ou gerados) — nunca vão para o Git
-data/
+/data/
 cache_cvm/
 research_out/
 *.db
